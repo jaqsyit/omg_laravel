@@ -79,13 +79,13 @@ class DatabaseSeeder extends Seeder
 
 
         $dataGroups = [
-            ['id' => 1, 'user_id' => 3, 'start' => '2023-10-30 13:00:00', 'end' => '2023-10-30 15:00:00', 'subject' => 'Өрт-техникалық минимум', 'chin' => 'ИТР', 'commission' => 'Ақын М., Мухаммед Б.', 'quantity' => 30, 'passed_on' => 15],
-            ['id' => 2, 'user_id' => 2, 'start' => '2023-10-30 15:00:00', 'end' => '2023-10-30 17:00:00', 'subject' => 'Өнеркәсіп қауіпсіздігі', 'chin' => 'Рабочий', 'commission' => 'Ақын М., Ахмедеева Г.', 'quantity' => 20, 'passed_on' => 10],
-            ['id' => 3, 'user_id' => 5, 'start' => '2023-10-31 10:00:00', 'end' => '2023-10-31 12:00:00', 'subject' => 'Еңбек қауіпсіздігі және еңбекті қорғау', 'chin' => 'ИТР', 'commission' => 'Бекенова А., Жұмабаев Р.', 'quantity' => 30, 'passed_on' => 15],
-            ['id' => 4, 'user_id' => 4, 'start' => '2023-10-31 13:00:00', 'end' => '2023-10-31 15:00:00', 'subject' => 'Өнеркәсіп қауіпсіздігі', 'chin' => 'Рабочий', 'commission' => 'Тұлебаева Ж., Сарсенов К.', 'quantity' => 20, 'passed_on' => 10]
+            ['id' => 1, 'user_id' => 3, 'start' => '2023-10-30 13:00:00', 'end' => '2023-10-30 15:00:00', 'subject' => 'Өрт-техникалық минимум', 'chin' => 'ИТР', 'commission' => 'Ақын М., Мухаммед Б.', 'quantity' => 30, 'passed_on' => 15, 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 2, 'user_id' => 2, 'start' => '2023-10-30 15:00:00', 'end' => '2023-10-30 17:00:00', 'subject' => 'Өнеркәсіп қауіпсіздігі', 'chin' => 'Рабочий', 'commission' => 'Ақын М., Ахмедеева Г.', 'quantity' => 20, 'passed_on' => 10, 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 3, 'user_id' => 5, 'start' => '2023-10-31 10:00:00', 'end' => '2023-10-31 12:00:00', 'subject' => 'Еңбек қауіпсіздігі және еңбекті қорғау', 'chin' => 'ИТР', 'commission' => 'Бекенова А., Жұмабаев Р.', 'quantity' => 30, 'passed_on' => 15, 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 4, 'user_id' => 4, 'start' => '2023-10-31 13:00:00', 'end' => '2023-10-31 15:00:00', 'subject' => 'Өнеркәсіп қауіпсіздігі', 'chin' => 'Рабочий', 'commission' => 'Тұлебаева Ж., Сарсенов К.', 'quantity' => 20, 'passed_on' => 10, 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01']
         ];
 
-        DB::table('groups')->upsert($dataGroups, ['id'], ['user_id', 'start', 'end', 'subject', 'chin', 'commission', 'quantity', 'passed_on']);
+        DB::table('groups')->upsert($dataGroups, ['id'], ['user_id', 'start', 'end', 'subject', 'chin', 'commission', 'quantity', 'passed_on','created_at','updated_at']);
 
 
         $dataWorkers = [
@@ -117,33 +117,33 @@ class DatabaseSeeder extends Seeder
 
 
         $dataExams = [
-            ['id' => 1, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 2, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 3, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 4, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 5, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 6, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 7, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 8, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 9, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 10, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 11, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 12, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 13, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 14, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 15, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 16, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 17, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 18, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 19, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 20, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 21, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 22, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 23, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 24, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
-            ['id' => 25, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false)],
+            ['id' => 1, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 2, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 3, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 4, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 5, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 6, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 7, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 8, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 9, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 10, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 11, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 12, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 13, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 14, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 15, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 16, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 17, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 18, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 19, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 20, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 21, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 22, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 23, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 24, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
+            ['id' => 25, 'group_id' => rand(1, 4), 'worker_id' => rand(1, 19), 'access_code' => rand(100000, 999999), 'pass' => rand(true, false), 'created_at' => '2024-01-01', 'updated_at' => '2024-01-01'],
 
         ];
-        DB::table('exams')->upsert($dataExams, ['id'], ['group_id', 'worker_id', 'access_code', 'pass']);
+        DB::table('exams')->upsert($dataExams, ['id'], ['group_id', 'worker_id', 'access_code', 'pass','created_at','updated_at']);
     }
 }
