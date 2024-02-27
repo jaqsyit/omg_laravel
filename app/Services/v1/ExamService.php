@@ -86,9 +86,38 @@ class ExamService
                 return response()->json(['message' => 'Exam passed'], 409);
             }
 //            $startedExam = exam::where('id', $exam->id)->update(['pass' => false]);
+            $subject = $exam['group']['subject'];
+            switch ($subject) {
+                case 'Өрт-техникалық минимум':
+                    $pathRaw = 'ptm';
+                    break;
+                case 'Өнеркәсіп қауіпсіздігі':
+                    $pathRaw = 'pb';
+                    break;
+                case 'Еңбек қауіпсіздігі және еңбекті қорғау':
+                    $pathRaw = 'ekek';
+                    break;
+                default:
+                    $pathRaw = '';
+            }
+            $pathRaw .= '_' . $data['language'];
+
+            $chin = $exam['group']['chin'];
+            switch ($chin) {
+                case 'ИТР':
+                    $pathRaw .= '_itr';
+                    break;
+                case 'Рабочий':
+                    $pathRaw .= '_rb';
+                    break;
+                default:
+                    $pathRaw .= '';
+            }
+
+            $pathRaw .= '.docx';
 
             $reader = IOFactory::createReader('Word2007');
-            $path = storage_path('app/Private/test2.docx');
+            $path = storage_path('app/private/' . $pathRaw);
             $phpWord = $reader->load($path);
             $questions = [];
             $currentQuestion = null;
