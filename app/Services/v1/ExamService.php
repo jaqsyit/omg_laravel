@@ -108,7 +108,7 @@ class ExamService
                     $pathRaw .= '_itr';
                     break;
                 case 'Рабочий':
-                    $pathRaw .= '_rb';
+                    $pathRaw .= '_rab';
                     break;
                 default:
                     $pathRaw .= '';
