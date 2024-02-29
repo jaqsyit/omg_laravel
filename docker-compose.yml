@@ -7,7 +7,7 @@ services:
         ports:
             - "81:80"
         volumes:
-            - /home/ubuntu/omg_laravel:/var/www/html
+            - /home/ubuntu/omg_laravel
         depends_on:
             - mysql-db
 
