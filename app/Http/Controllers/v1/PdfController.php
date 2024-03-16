@@ -79,7 +79,8 @@ class PdfController
         if (Storage::exists($filePath)) {
             $fileContents = Storage::get($filePath);
 //            return response()->json(['success' => 'https://omg-koo.kz' . $url], 200);
-            return response()->json(['success' => 'https://localhost' . $url], 200);
+//            return response()->json(['success' => 'https://localhost' . $url], 200);
+            return response()->json(['success' => 'https://backend.omg-koo.kz' . $url], 200);
 
 //            return Response::make($fileContents, 200, [
 //                'Content-Type' => 'application/pdf',
