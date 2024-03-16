@@ -7,6 +7,7 @@ use App\Models\v1\Groups;
 use App\Models\v1\User;
 use App\Models\v1\Workers;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Mpdf;
@@ -72,9 +73,25 @@ class PdfController
         $mpdf->WriteHTML($html);
 
         $filename = 'access_codes_' . $id . '.pdf';
-        $filePath = "public/{$filename}";
+        $filePath = public_path($filename); // Используйте public_path для получения пути к файлу в папке public
 
+// Сохраняем файл на сервере
         Storage::put($filePath, $mpdf->Output('', 'S'));
+
+// Получаем содержимое файла
+        $file = File::get($filePath);
+
+// Создаем ответ для скачивания файла
+        $response = response()->make($file, 200);
+        $response->header('Content-Type', 'application/pdf');
+        $response->header('Content-Disposition', 'attachment; filename="' . $filename . '"'); // Задаем имя файла
+
+// Удаляем файл после скачивания
+        unlink($filePath);
+
+        return $response;
+
+
         $url = Storage::url($filePath);
         if (Storage::exists($filePath)) {
             $fileContents = Storage::get($filePath);
