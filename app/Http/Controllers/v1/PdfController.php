@@ -73,8 +73,8 @@ class PdfController
 
         $filename = 'access_codes_' . $id . '.pdf';
 
-// Путь, где будет сохранен файл PDF (в публичной директории)
-        $filePath = public_path('storage/' . $filename);
+// Путь, где будет сохранен файл PDF (в директории storage/app/public)
+        $filePath = storage_path('app/public/' . $filename);
 
 // Генерация PDF и сохранение его в указанном месте
         $mpdf->Output($filePath, 'F');
