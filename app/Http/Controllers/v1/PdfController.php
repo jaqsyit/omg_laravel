@@ -72,22 +72,25 @@ class PdfController
         $mpdf->WriteHTML($html);
 
         $filename = 'access_codes_' . $id . '.pdf';
+        $filePath = "public/{$filename}";
 
-// Путь, где будет сохранен файл PDF (в директории storage/app/public)
-        $filePath = storage_path('app/public/' . $filename);
+        Storage::put($filePath, $mpdf->Output('', 'S'));
+        $url = Storage::url($filePath);
+        if (Storage::exists($filePath)) {
+            $fileContents = Storage::get($filePath);
+//            return response()->json(['success' => 'https://omg-koo.kz' . $url], 200);
+//            return response()->json(['success' => 'https://localhost' . $url], 200);
+            return response()->json(['success' => 'https://backend.omg-koo.kz' . $url], 200);
 
-// Генерация PDF и сохранение его в указанном месте
-        $mpdf->Output($filePath, 'F');
 
-// Проверка, существует ли файл
-        if (file_exists($filePath)) {
-            // Возвращаем ссылку на файл
-            return response()->json(['success' => 'https://backend.omg-koo.kz/storage/' . $filename], 200);
+//            return Response::make($fileContents, 200, [
+//                'Content-Type' => 'application/pdf',
+//                'Content-Disposition' => 'inline; filename="' . $filename . '"'
+//            ]);
         } else {
-            // Если файл не найден, возвращаем ошибку
+            // Если файл не найден, можно вернуть ошибку
             return response()->json(['error' => 'File not found.'], 404);
         }
-
 
 
     }
