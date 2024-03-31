@@ -56,4 +56,6 @@ Route::prefix('v1')->group(function () {
         Route::get('/orgs', 'App\Http\Controllers\v1\OrgController@index');
         Route::get('/access-codes/{id}', 'App\Http\Controllers\v1\PdfController@pdfAccessCodes');
     });
+
+    Route::post('/practice', 'App\Http\Controllers\v1\ExamController@actionStartPractice');
 });

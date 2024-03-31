@@ -87,40 +87,33 @@ class ExamService
             }
 //            $startedExam = exam::where('id', $exam->id)->update(['pass' => false]);
             $subject = $exam['group']['subject'];
-            switch ($subject) {
-                case 'Өрт-техникалық минимум':
-                    $pathRaw = 'ptm';
-                    break;
-                case 'Өнеркәсіп қауіпсіздігі':
-                    $pathRaw = 'pb';
-                    break;
-                case 'Еңбек қауіпсіздігі және еңбекті қорғау':
-                    $pathRaw = 'ekek';
-                    break;
-                default:
-                    $pathRaw = '';
-            }
+            $pathRaw = $this->switchSubject($subject);
             $pathRaw .= '_' . $data['language'];
 
             $chin = $exam['group']['chin'];
-            switch ($chin) {
-                case 'ИТР':
-                    $pathRaw .= '_itr';
-                    break;
-                case 'Рабочий':
-                    $pathRaw .= '_rab';
-                    break;
-                default:
-                    $pathRaw .= '';
-            }
+            $pathRaw .= $this->switchChin($chin);
 
             $pathRaw .= '.docx';
+            $quantity = $exam->group->quantity;
+            $generatedQuestions = $this->getQuestions($pathRaw,$quantity);
 
-            $reader = IOFactory::createReader('Word2007');
-            $path = storage_path('app/private/' . $pathRaw);
-            $phpWord = $reader->load($path);
-            $questions = [];
-            $currentQuestion = null;
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+        return response()->json(['success' => 'Start', 'questions' => $generatedQuestions], 200);
+    }
+
+    private function getQuestions($pathRaw, $quantity)
+    {
+        $reader = IOFactory::createReader('Word2007');
+        $path = storage_path('app/private/' . $pathRaw);
+        $phpWord = $reader->load($path);
+        $questions = [];
+        $currentQuestion = null;
+
+        foreach ($phpWord->getSections() as $section) {
+            $elements = $section->getElements();
 
             foreach ($phpWord->getSections() as $section) {
                 $elements = $section->getElements();
@@ -144,48 +137,77 @@ class ExamService
                                         'correct_option' => null
                                     ];
                                 } elseif ($currentQuestion) {
-                                    if ($text == "*") {
-                                        $currentQuestion['correct_option'] = count($currentQuestion['options']) - 1;
-                                    } else {
-                                        $currentQuestion['options'][] = $text;
+                                    if (strpos($text, "*") !== false) {
+                                        $correctOptionIndex = count($currentQuestion['options']);
+                                        $currentQuestion['correct_option'] = $correctOptionIndex - 1;
+                                        $text = str_replace("*", "", $text);
                                     }
+                                    $currentQuestion['options'][] = $text;
                                 }
                             }
                         }
                     }
                 }
             }
-            if ($currentQuestion) {
-                $questions[] = $currentQuestion;
-            }
-
-
-            $quantity = $exam->group->quantity;
-            $generatedQuestions = [];
-
-            while (count($generatedQuestions) < $quantity) {
-                foreach ($questions as $question) {
-                    $generatedQuestions[] = $question;
-                    if (count($generatedQuestions) == $quantity) {
-                        break;
-                    }
-                }
-            }
-
-            shuffle($generatedQuestions);
-
-            foreach ($generatedQuestions as &$gQuestion) {
-                $correctOptionIndex = $gQuestion['correct_option'];
-                if (isset($gQuestion['options'][$correctOptionIndex])) {
-                    $correctOption = $gQuestion['options'][$correctOptionIndex];
-                    shuffle($gQuestion['options']);
-                    $gQuestion['correct_option'] = array_search($correctOption, $gQuestion['options']);
-                }
-            }
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
         }
-        return response()->json(['success' => 'Start', 'questions' => $generatedQuestions], 200);
+        if ($currentQuestion) {
+            $questions[] = $currentQuestion;
+        }
+
+        $generatedQuestions = [];
+
+        while (count($generatedQuestions) < $quantity) {
+            foreach ($questions as $question) {
+                $generatedQuestions[] = $question;
+                if (count($generatedQuestions) == $quantity) {
+                    break;
+                }
+            }
+        }
+
+        shuffle($generatedQuestions);
+
+        foreach ($generatedQuestions as &$gQuestion) {
+            $correctOptionIndex = $gQuestion['correct_option'];
+            if (isset($gQuestion['options'][$correctOptionIndex])) {
+                $correctOption = $gQuestion['options'][$correctOptionIndex];
+                shuffle($gQuestion['options']);
+                $gQuestion['correct_option'] = array_search($correctOption, $gQuestion['options']);
+            }
+        }
+        return $generatedQuestions;
+    }
+
+    private function switchSubject($subject)
+    {
+        switch ($subject) {
+            case 'Өрт-техникалық минимум':
+                $pathRaw = 'ptm';
+                break;
+            case 'Өнеркәсіп қауіпсіздігі':
+                $pathRaw = 'pb';
+                break;
+            case 'Еңбек қауіпсіздігі және еңбекті қорғау':
+                $pathRaw = 'ekek';
+                break;
+            default:
+                $pathRaw = '';
+        }
+        return$pathRaw;
+    }
+
+    private function switchChin($chin){
+        switch ($chin) {
+            case 'ИТР':
+                $pathRawChin = '_itr';
+                break;
+            case 'Рабочий':
+                $pathRawChin = '_rab';
+                break;
+            default:
+                $pathRawChin = '';
+        }
+        return $pathRawChin;
     }
 
 
@@ -219,4 +241,63 @@ class ExamService
         }
         return response()->json(['success' => 'End', 'questions' => $exam], 200);
     }
+    public function startPractice($data)
+    {
+        $validatedData = $data->validate([
+            'subject' => 'required|string|max:255',
+            'chin' => 'required|string|max:30',
+//            'fio' => 'required|max:30',
+            'language' => 'required|max:2',
+            'quantity' => 'required|int'
+        ]);
+        try {
+
+            $subject = $validatedData['subject'];
+            $pathRaw = $this->switchSubject($subject);
+            $pathRaw .= '_' . $validatedData['language'];
+
+            $chin = $validatedData['chin'];
+            $pathRaw .= $this->switchChin($chin);
+            $pathRaw .= '.docx';
+            $quantity = $validatedData['quantity'];
+            $generatedQuestions = $this->getQuestions($pathRaw,$quantity);
+
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+        return response()->json(['success' => 'Start', 'questions' => $generatedQuestions], 200);
+    }
+
+    public function endPractice($data)
+    {
+        try {
+            $exam = exam::where('access_code', $data['accessCode'])->with('group')->with('workers.org')->first();
+            if (!$exam) {
+                return response()->json(['message' => 'Exam not found'], 404);
+            }
+            if ($exam->created_at != $exam->updated_at or $exam->updated_at == null) {
+                return response()->json(['message' => 'Exam passed'], 409);
+            }
+
+            if ($data['right_count'] >= $exam->group->passed_on) {
+                $passed = true;
+            } else {
+                $passed = false;
+            }
+
+            $updatePass = exam::where('id', $exam->id)->update(['pass' => $passed, 'created_at' => $exam->group->start]);
+
+            if ($updatePass == 0) {
+                return response()->json(['message' => 'Экзамен аяқтау мүмкін емес'], 409);
+            }
+
+            $exam = exam::where('access_code', $data['accessCode'])->with('group')->with('workers.org')->first();
+
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+        return response()->json(['success' => 'End', 'questions' => $exam], 200);
+    }
+
 }

@@ -52,4 +52,8 @@ class ExamController extends Controller
     public function actionEndExam(Request $request){
         return $this->ExamService->endExam($request);
     }
+
+    public function actionStartPractice(Request $request){
+        return $this->ExamService->startPractice($request);
+    }
 }
