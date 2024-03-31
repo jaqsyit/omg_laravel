@@ -246,7 +246,6 @@ class ExamService
         $validatedData = $data->validate([
             'subject' => 'required|string|max:255',
             'chin' => 'required|string|max:30',
-//            'fio' => 'required|max:30',
             'language' => 'required|max:2',
             'quantity' => 'required|int'
         ]);
@@ -268,36 +267,4 @@ class ExamService
         }
         return response()->json(['success' => 'Start', 'questions' => $generatedQuestions], 200);
     }
-
-    public function endPractice($data)
-    {
-        try {
-            $exam = exam::where('access_code', $data['accessCode'])->with('group')->with('workers.org')->first();
-            if (!$exam) {
-                return response()->json(['message' => 'Exam not found'], 404);
-            }
-            if ($exam->created_at != $exam->updated_at or $exam->updated_at == null) {
-                return response()->json(['message' => 'Exam passed'], 409);
-            }
-
-            if ($data['right_count'] >= $exam->group->passed_on) {
-                $passed = true;
-            } else {
-                $passed = false;
-            }
-
-            $updatePass = exam::where('id', $exam->id)->update(['pass' => $passed, 'created_at' => $exam->group->start]);
-
-            if ($updatePass == 0) {
-                return response()->json(['message' => 'Экзамен аяқтау мүмкін емес'], 409);
-            }
-
-            $exam = exam::where('access_code', $data['accessCode'])->with('group')->with('workers.org')->first();
-
-        } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-        return response()->json(['success' => 'End', 'questions' => $exam], 200);
-    }
-
 }
