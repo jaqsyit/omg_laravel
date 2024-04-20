@@ -95,7 +95,7 @@ class ExamService
 
             $pathRaw .= '.docx';
             $quantity = $exam->group->quantity;
-            $generatedQuestions = $this->getQuestions($pathRaw,$quantity);
+            $generatedQuestions = $this->getQuestions($pathRaw, $quantity);
 
 
         } catch (Exception $e) {
@@ -139,7 +139,7 @@ class ExamService
                                 } elseif ($currentQuestion) {
                                     if (strpos($text, "*") !== false) {
                                         $correctOptionIndex = count($currentQuestion['options']);
-                                        $currentQuestion['correct_option'] = $correctOptionIndex - 1;
+                                        $currentQuestion['correct_option'] = $correctOptionIndex + 1;
                                         $text = str_replace("*", "", $text);
                                     }
                                     $currentQuestion['options'][] = $text;
@@ -153,6 +153,7 @@ class ExamService
         if ($currentQuestion) {
             $questions[] = $currentQuestion;
         }
+
 
         $generatedQuestions = [];
 
@@ -193,10 +194,11 @@ class ExamService
             default:
                 $pathRaw = '';
         }
-        return$pathRaw;
+        return $pathRaw;
     }
 
-    private function switchChin($chin){
+    private function switchChin($chin)
+    {
         switch ($chin) {
             case 'ИТР':
                 $pathRawChin = '_itr';
@@ -241,6 +243,7 @@ class ExamService
         }
         return response()->json(['success' => 'End', 'questions' => $exam], 200);
     }
+
     public function startPractice($data)
     {
         $validatedData = $data->validate([
@@ -259,7 +262,7 @@ class ExamService
             $pathRaw .= $this->switchChin($chin);
             $pathRaw .= '.docx';
             $quantity = $validatedData['quantity'];
-            $generatedQuestions = $this->getQuestions($pathRaw,$quantity);
+            $generatedQuestions = $this->getQuestions($pathRaw, $quantity);
 
 
         } catch (Exception $e) {
