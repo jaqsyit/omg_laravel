@@ -203,7 +203,7 @@ class ExamService
             case 'ИТР':
                 $pathRawChin = '_itr';
                 break;
-            case 'Рабочий':
+            case 'Жұмысшы':
                 $pathRawChin = '_rab';
                 break;
             default:
