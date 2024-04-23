@@ -154,8 +154,11 @@ class ExamService
             $questions[] = $currentQuestion;
         }
 
+//        return $questions;
 
         $generatedQuestions = [];
+
+        shuffle($questions);
 
         while (count($generatedQuestions) < $quantity) {
             foreach ($questions as $question) {
@@ -168,7 +171,7 @@ class ExamService
 
         shuffle($generatedQuestions);
 
-        foreach ($generatedQuestions as &$gQuestion) {
+        foreach ($generatedQuestions as $gQuestion) {
             $correctOptionIndex = $gQuestion['correct_option'];
             if (isset($gQuestion['options'][$correctOptionIndex])) {
                 $correctOption = $gQuestion['options'][$correctOptionIndex];
