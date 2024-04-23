@@ -140,7 +140,7 @@ class ExamService
                                     if (strpos($text, "*") !== false) {
                                         $correctOptionIndex = count($currentQuestion['options']);
                                         $currentQuestion['correct_option'] = $correctOptionIndex;
-//                                        $text = str_replace("*", "", $text);
+                                        $text = str_replace("*", "", $text);
                                     }
                                     $currentQuestion['options'][] = $text;
                                 }
